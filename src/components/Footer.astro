@@ -1,0 +1,22 @@
+---
+import { AUTHOR } from '../consts';
+
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<div class="container">
+		<p class="muted">© {year} {AUTHOR.name}</p>
+	</div>
+</footer>
+
+<style>
+	footer {
+		border-top: 1px solid var(--border);
+		padding: 24px 0;
+		font-size: 0.9rem;
+	}
+	p {
+		margin: 0;
+	}
+</style>

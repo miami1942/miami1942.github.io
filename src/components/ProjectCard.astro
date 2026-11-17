@@ -1,0 +1,47 @@
+---
+// 포트폴리오 카드 한 장. 메인 화면과 포트폴리오 목록에서 같이 쓴다.
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, tech } = project.data;
+---
+
+<a class="card" href={`/projects/${project.id}`}>
+	<h3>{title}</h3>
+	<p class="muted">{description}</p>
+	{
+		tech.length > 0 && (
+			<ul class="tags">
+				{tech.map((t) => (
+					<li>{t}</li>
+				))}
+			</ul>
+		)
+	}
+</a>
+
+<style>
+	.card {
+		display: block;
+		padding: 20px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg-soft);
+		color: var(--text);
+		transition: border-color 0.15s;
+	}
+	.card:hover {
+		border-color: var(--accent);
+		text-decoration: none;
+	}
+	h3 {
+		margin: 0 0 6px;
+	}
+	p {
+		margin: 0;
+	}
+</style>

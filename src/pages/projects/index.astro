@@ -1,0 +1,24 @@
+---
+// 포트폴리오 목록  →  주소: /projects
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects } from '../../utils/content';
+
+const projects = await getProjects();
+---
+
+<BaseLayout title="포트폴리오" description="프로젝트 목록">
+	<h1>포트폴리오</h1>
+	{projects.length === 0 && <p class="muted">아직 프로젝트가 없습니다.</p>}
+	<div class="grid">
+		{projects.map((project) => <ProjectCard project={project} />)}
+	</div>
+</BaseLayout>
+
+<style>
+	.grid {
+		display: grid;
+		gap: 16px;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	}
+</style>

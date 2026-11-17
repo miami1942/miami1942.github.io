@@ -1,0 +1,12 @@
+---
+// 날짜를 "2026. 11. 17." 형태로 보여 준다. <time> 태그를 써서 검색엔진도 날짜를 알아보게 한다.
+interface Props {
+	date: Date;
+}
+
+const { date } = Astro.props;
+---
+
+<time datetime={date.toISOString()}>
+	{date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'numeric', day: 'numeric', timeZone: 'UTC' })}
+</time>

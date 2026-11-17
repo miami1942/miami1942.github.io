@@ -1,0 +1,66 @@
+---
+// 프로젝트 상세  →  주소: /projects/파일이름
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { getProjects } from '../../utils/content';
+
+export async function getStaticPaths() {
+	const projects = await getProjects();
+	return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, date, tech, link, repo } = project.data;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={title} description={description}>
+	<article>
+		<header>
+			<h1>{title}</h1>
+			<p class="muted">{description}</p>
+			<p class="muted"><FormattedDate date={date} /></p>
+			{
+				tech.length > 0 && (
+					<ul class="tags">
+						{tech.map((t) => (
+							<li>{t}</li>
+						))}
+					</ul>
+				)
+			}
+			<p class="links">
+				{link && <a href={link}>서비스 보기</a>}
+				{repo && <a href={repo}>소스 코드</a>}
+			</p>
+		</header>
+		<div class="prose">
+			<Content />
+		</div>
+	</article>
+	<p><a href="/projects">← 포트폴리오 목록으로</a></p>
+</BaseLayout>
+
+<style>
+	header {
+		margin-bottom: 32px;
+		padding-bottom: 20px;
+		border-bottom: 1px solid var(--border);
+	}
+	h1 {
+		margin: 0 0 4px;
+	}
+	header p {
+		margin: 4px 0 0;
+	}
+	.links {
+		display: flex;
+		gap: 16px;
+	}
+</style>

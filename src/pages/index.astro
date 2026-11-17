@@ -1,0 +1,77 @@
+---
+// 메인(자기소개) 페이지  →  주소: /
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { AUTHOR } from '../consts';
+import { getPublishedPosts, getProjects } from '../utils/content';
+
+const recentPosts = (await getPublishedPosts()).slice(0, 3);
+const featuredProjects = (await getProjects()).slice(0, 2);
+---
+
+<BaseLayout>
+	<section class="intro">
+		<p class="muted">{AUTHOR.role}</p>
+		<h1>안녕하세요, {AUTHOR.name}입니다.</h1>
+		<p>{AUTHOR.bio}</p>
+		<p class="links">
+			{AUTHOR.links.map((link) => <a href={link.href}>{link.label}</a>)}
+		</p>
+	</section>
+
+	<section>
+		<h2>최근 글</h2>
+		<ul class="post-list">
+			{
+				recentPosts.map((post) => (
+					<li>
+						<a href={`/blog/${post.id}`}>{post.data.title}</a>
+						<span class="muted">
+							<FormattedDate date={post.data.pubDate} />
+						</span>
+					</li>
+				))
+			}
+		</ul>
+		<a href="/blog">글 전체 보기 →</a>
+	</section>
+
+	<section>
+		<h2>프로젝트</h2>
+		<div class="grid">
+			{featuredProjects.map((project) => <ProjectCard project={project} />)}
+		</div>
+		<p><a href="/projects">포트폴리오 전체 보기 →</a></p>
+	</section>
+</BaseLayout>
+
+<style>
+	section {
+		margin-bottom: 56px;
+	}
+	.intro h1 {
+		margin: 4px 0 16px;
+		font-size: 2rem;
+	}
+	.links {
+		display: flex;
+		gap: 16px;
+	}
+	.post-list {
+		padding: 0;
+		list-style: none;
+	}
+	.post-list li {
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 8px 0;
+		border-bottom: 1px solid var(--border);
+	}
+	.grid {
+		display: grid;
+		gap: 16px;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	}
+</style>
