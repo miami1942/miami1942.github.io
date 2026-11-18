@@ -89,6 +89,15 @@ h3 {
 	max-width: 100%;
 	height: auto;
 }
+/* 한 문단에 이미지가 여러 장이면(마크다운에서 같은 줄에 이어 쓰면) 한 줄에 나란히 놓는다 */
+.prose p:has(> img + img) {
+	display: flex;
+	gap: 12px;
+}
+.prose p:has(> img + img) img {
+	flex: 1;
+	min-width: 0;
+}
 .prose pre {
 	padding: 16px;
 	overflow-x: auto;

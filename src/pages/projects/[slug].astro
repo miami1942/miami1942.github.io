@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, description, date, tech, link, repo } = project.data;
+const { title, description, date, period, tech, link, repo } = project.data;
 const { Content } = await render(project);
 ---
 
@@ -25,7 +25,7 @@ const { Content } = await render(project);
 		<header>
 			<h1>{title}</h1>
 			<p class="muted">{description}</p>
-			<p class="muted"><FormattedDate date={date} /></p>
+			<p class="muted">{period ?? <FormattedDate date={date} />}</p>
 			{
 				tech.length > 0 && (
 					<ul class="tags">

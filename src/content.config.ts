@@ -20,7 +20,8 @@ const projects = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
-		date: z.coerce.date(),
+		date: z.coerce.date(), // 정렬 기준
+		period: z.string().optional(), // 있으면 날짜 대신 표시 (예: '2026.03 ~ 진행 중')
 		tech: z.array(z.string()).default([]),
 		link: z.url().optional(), // 서비스 주소
 		repo: z.url().optional(), // 소스 코드 주소
