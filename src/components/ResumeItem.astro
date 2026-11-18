@@ -1,0 +1,50 @@
+---
+// 이력 페이지의 한 줄 항목(기간 + 제목 + 보조 정보 + 설명). 경력·프로젝트·학력·자격에서 같이 쓴다.
+interface Props {
+	period: string;
+	title: string;
+	meta?: string; // 고객사 등 제목 옆에 흐리게 붙는 정보
+	detail?: string;
+}
+
+const { period, title, meta, detail } = Astro.props;
+---
+
+<div class="item">
+	<p class="period muted">{period}</p>
+	<div>
+		<h3>
+			{title}
+			{meta && <span class="muted"> · {meta}</span>}
+		</h3>
+		{detail && <p>{detail}</p>}
+	</div>
+</div>
+
+<style>
+	.item {
+		display: grid;
+		grid-template-columns: 150px 1fr;
+		gap: 4px 16px;
+		margin-bottom: 18px;
+	}
+	@media (max-width: 560px) {
+		.item {
+			grid-template-columns: 1fr;
+		}
+	}
+	h3 {
+		margin: 0;
+		font-size: 1.02rem;
+	}
+	h3 span {
+		font-weight: 400;
+	}
+	p {
+		margin: 0;
+	}
+	.period {
+		font-size: 0.9rem;
+		font-variant-numeric: tabular-nums;
+	}
+</style>

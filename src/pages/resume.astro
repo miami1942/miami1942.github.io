@@ -1,29 +1,81 @@
 ---
 // 이력 페이지  →  주소: /resume
-// 항목은 아래 배열만 고치면 화면에 그대로 반영된다.
+// 항목은 아래 배열만 고치면 화면에 그대로 반영된다. (공개용 요약본: 민감한 사업·장애 상세는 넣지 않는다)
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ResumeItem from '../components/ResumeItem.astro';
 import { AUTHOR } from '../consts';
 
 const experience = [
-	{ period: '20XX.XX – 현재', title: '회사 이름 · 직무', detail: '맡은 일을 한두 줄로 적습니다.' },
+	{
+		period: '2023.07 – 현재',
+		title: '코난테크놀로지',
+		meta: '풀스택 개발자 (대리)',
+		detail: '방송사·공공기관의 대용량 미디어 전송·아카이브 시스템과 MLOps 플랫폼을 개발하고, 고객 현장의 운영과 장애 대응을 맡고 있습니다.',
+	},
+	{
+		period: '2020.11 – 2023.05',
+		title: '코그넷나인',
+		meta: '개발자',
+		detail: '데이터 가공 서비스와 금융·유통 고객사의 웹을 개발했고, MLOps 프로젝트에서 개발 리더(PL)를 맡았습니다.',
+	},
 ];
 
-const education = [{ period: '20XX – 20XX', title: '학교 이름 · 전공', detail: '' }];
+const projectGroups = [
+	{
+		company: '코난테크놀로지',
+		items: [
+			{ period: '2026.03 – 진행 중', title: '기록물 관리(MAM) 웹 React 재구축', meta: '국가기록원', detail: '프론트엔드 구조 설계·구현, 백엔드 API 일부' },
+			{ period: '2025.08 – 진행 중', title: '방송 영상 전송 에이전트', meta: 'KBS 한국방송공사', detail: 'Electron 전송 에이전트 주 개발, Windows·macOS 배포와 유지보수' },
+			{ period: '2026.06 – 2026.10', title: 'GPU 서버 MLOps 운영과 장애 복구', meta: '괴산 K-스마트팜', detail: '서비스 19개 정상화, 진단·인수인계 문서화' },
+			{ period: '2024.12 – 2026.06', title: '강의 영상 대용량 업로더', meta: '한국방송통신대학교', detail: '분할 전송 업로더 주 개발, 유지보수' },
+			{ period: '2025.06', title: 'LLM 포털 화면·API 개발', meta: '한국남부발전', detail: '에러 리포트·프롬프트 관리·채팅 화면과 API' },
+			{ period: '2023.07 – 2025.06', title: 'MLOps·MLHub 플랫폼과 모델 추론 서비스', meta: '사내 연구소', detail: 'MLOps 화면·API, 모델 추론 템플릿, 컨테이너 인프라' },
+		],
+	},
+	{
+		company: '코그넷나인',
+		items: [
+			{ period: '2022.12 – 2023.05', title: 'MLOps 플랫폼', meta: '삼성웰스토리', detail: '개발 리더(PL), NestJS 백엔드 API·BFF 개발' },
+			{ period: '2022.10 – 2022.12', title: '고객 대기 관리 시스템', meta: '아주오토리움', detail: '프론트엔드 리더, 태블릿 화면 개발(Vuetify)' },
+			{ period: '2022.08 – 2022.09', title: 'KB ODS', meta: 'KB증권', detail: 'React·MUI 프론트엔드' },
+			{ period: '2022.07 – 2022.08', title: 'KB FCC', meta: 'KB손해보험', detail: 'Vue.js 화면 개발, ESLint 기반 개발 환경 통일' },
+			{ period: '2020.11 – 2022.06', title: '데이터고블린', meta: '자사 서비스', detail: '이미지·음성 데이터 가공 도구, Python 전후처리, AWS 구축' },
+		],
+	},
+];
 
-const skills = ['기술 1', '기술 2', '기술 3'];
+const education = [{ period: '2014.03 – 2019.02', title: '평택대학교', meta: '정보통신학과 졸업' }];
+
+const certificates = [{ period: '2019.05', title: '정보처리기사' }];
+
+const skillGroups = [
+	{ area: '프론트엔드', items: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'FSD 아키텍처', 'Vue.js', 'Vuetify', 'MUI', 'Zustand', 'Redux'] },
+	{ area: '데스크톱', items: ['Electron (Windows·macOS 배포, 자동 업데이트)', 'WebSocket', '대용량 분할 전송'] },
+	{ area: '백엔드', items: ['Java', 'Spring Boot', 'MyBatis', 'NestJS (BFF)', 'Python FastAPI', 'Flask'] },
+	{ area: '데이터베이스', items: ['PostgreSQL', 'Oracle', 'Tibero', 'MariaDB', 'SQLite', 'LanceDB'] },
+	{ area: 'MLOps·인프라', items: ['Docker Swarm·Stack', 'nginx', 'Gradio', 'NVIDIA Triton', 'MLflow', 'CUDA·PyTorch 환경 구성', 'llama.cpp', 'AWS (EC2·ECS·S3)'] },
+	{ area: 'AI 활용 개발', items: ['Claude Code 실무 도입', '작업 규칙·이슈 이력 문서 체계'] },
+];
 ---
 
 <BaseLayout title="이력" description={`${AUTHOR.name} 이력`}>
 	<h1>이력</h1>
+	<p class="muted">{AUTHOR.name} · {AUTHOR.role}</p>
 
 	<section>
 		<h2>경력</h2>
+		{experience.map((item) => <ResumeItem {...item} />)}
+	</section>
+
+	<section>
+		<h2>주요 프로젝트</h2>
 		{
-			experience.map((item) => (
-				<div class="item">
-					<p class="muted">{item.period}</p>
-					<h3>{item.title}</h3>
-					{item.detail && <p>{item.detail}</p>}
+			projectGroups.map((group) => (
+				<div class="group">
+					<h3 class="company">{group.company}</h3>
+					{group.items.map((item) => (
+						<ResumeItem {...item} />
+					))}
 				</div>
 			))
 		}
@@ -31,41 +83,52 @@ const skills = ['기술 1', '기술 2', '기술 3'];
 
 	<section>
 		<h2>학력</h2>
-		{
-			education.map((item) => (
-				<div class="item">
-					<p class="muted">{item.period}</p>
-					<h3>{item.title}</h3>
-					{item.detail && <p>{item.detail}</p>}
-				</div>
-			))
-		}
+		{education.map((item) => <ResumeItem {...item} />)}
+	</section>
+
+	<section>
+		<h2>자격</h2>
+		{certificates.map((item) => <ResumeItem {...item} />)}
 	</section>
 
 	<section>
 		<h2>기술</h2>
-		<ul class="tags">
-			{skills.map((skill) => <li>{skill}</li>)}
-		</ul>
+		{
+			skillGroups.map((group) => (
+				<div class="skill-row">
+					<h3>{group.area}</h3>
+					<ul class="tags">
+						{group.items.map((skill) => (
+							<li>{skill}</li>
+						))}
+					</ul>
+				</div>
+			))
+		}
 	</section>
 </BaseLayout>
 
 <style>
 	section {
-		margin-bottom: 40px;
+		margin-bottom: 44px;
 	}
 	h2 {
 		padding-bottom: 6px;
 		border-bottom: 1px solid var(--border);
 	}
-	.item {
-		margin-bottom: 20px;
+	.group {
+		margin-bottom: 24px;
 	}
-	.item h3 {
-		margin: 0;
-		font-size: 1.05rem;
+	.company {
+		margin: 0 0 12px;
+		font-size: 0.95rem;
+		color: var(--accent);
 	}
-	.item p {
+	.skill-row {
+		margin-bottom: 16px;
+	}
+	.skill-row h3 {
 		margin: 0;
+		font-size: 0.95rem;
 	}
 </style>
